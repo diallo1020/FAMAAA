@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyse des Ventes</title>
+    <!-- Ajouter le CDN de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin-top: 30px;
+        }
+
+        .section {
+            padding: 20px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        .section h3 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Section Analyse des Ventes -->
+        <div class="section">
+            <h2>Analyse des Ventes</h2>
+            <p>Voici les statistiques des ventes mensuelles et l'analyse des performances de ton entreprise.</p>
+        </div>
+
+        <!-- Graphique des Ventes -->
+        <div class="section">
+            <h3>Graphique des Ventes Mensuelles</h3>
+            <canvas id="salesChart" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Tableau de Répartition des Ventes -->
+        <div class="section">
+            <h3>Répartition des Ventes par Article</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th>Quantité Vendue</th>
+                        <th>Revenu (GNF)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Produit A</td>
+                        <td>150</td>
+                        <td>7500 GNF</td>
+                    </tr>
+                    <tr>
+                        <td>Produit B</td>
+                        <td>120</td>
+                        <td>6000 GNF</td>
+                    </tr>
+                    <tr>
+                        <td>Produit C</td>
+                        <td>200</td>
+                        <td>10000 GNF</td>
+                    </tr>
+                    <tr>
+                        <td>Produit D</td>
+                        <td>80</td>
+                        <td>4000 GNF</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Total des Ventes -->
+        <div class="section">
+            <h3>Total des Ventes</h3>
+            <p id="totalSales">Total des Ventes: 0 GNF</p>
+        </div>
+    </div>
+
+    <script>
+        // Données fictives des ventes mensuelles
+        const salesData = {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+            datasets: [{
+                label: 'Ventes (GNF)',
+                data: [15000, 18000, 22000, 25000, 27000, 30000, 32000],
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        // Configuration du graphique
+        const config = {
+            type: 'line',
+            data: salesData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Graphique des Ventes Mensuelles'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw + ' GNF';  // Format des valeurs
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        // Créer le graphique des ventes
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        const salesChart = new Chart(ctx, config);
+
+        // Calculer le total des ventes
+        const sales = [15000, 18000, 22000, 25000, 27000, 30000, 32000];
+        const totalSales = sales.reduce((acc, currentValue) => acc + currentValue, 0);
+
+        // Afficher le total des ventes
+        document.getElementById('totalSales').textContent = `Total des Ventes: ${totalSales} GNF`;
+    </script>
+
+</body>
+</html>

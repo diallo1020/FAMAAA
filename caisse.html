@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comptabilité et Prévisions Financières avec IA</title>
+    <!-- Ajouter le CDN de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Style global pour le site */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin-top: 30px;
+        }
+
+        .section {
+            padding: 20px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h3 {
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        .payment-status {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">Dashboard IA</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Section Comptabilité -->
+        <div class="section">
+            <h2>Comptabilité</h2>
+            <p>Voici les outils de comptabilité pour vous aider à gérer les finances de votre entreprise ou de votre projet. Vous pouvez voir les prévisions des revenus pour les mois à venir.</p>
+        </div>
+
+        <!-- Formulaire de saisie des achats -->
+        <form id="purchaseForm">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="itemName" class="form-label">Nom de l'article</label>
+                    <input type="text" class="form-control" id="itemName" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="itemPrice" class="form-label">Prix (GNF)</label>
+                    <input type="number" class="form-control" id="itemPrice" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="itemQuantity" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="itemQuantity" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter à la Caisse et Payer</button>
+        </form>
+
+        <!-- Message de paiement -->
+        <div class="payment-status" id="paymentStatus"></div>
+
+        <!-- Tableau des achats en caisse -->
+        <div class="section">
+            <h3>Articles en Caisse</h3>
+            <table id="purchaseTable">
+                <thead>
+                    <tr>
+                        <th>Article</th>
+                        <th>Prix Unitaire (GNF)</th>
+                        <th>Quantité</th>
+                        <th>Total (GNF)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les achats seront ajoutés ici -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Graphique des prévisions financières -->
+        <div class="section">
+            <h2>Prévisions Financières</h2>
+            <canvas id="financialForecastChart" width="400" height="200"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        // Données fictives pour les prévisions financières
+        const forecastData = {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+            datasets: [{
+                label: 'Prévisions des Revenus (GNF)',
+                data: [15000, 18000, 22000, 25000, 27000, 30000, 32000], // Ces données peuvent être générées dynamiquement
+                borderColor: 'rgba(75, 192, 192, 1)',  // Couleur de la ligne
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Couleur du fond
+                fill: true,  // Remplir la zone sous la ligne
+                tension: 0.4  // Courbure de la ligne
+            }]
+        };
+
+        // Configuration du graphique
+        const config = {
+            type: 'line',  // Type de graphique (ici, une ligne)
+            data: forecastData,  // Les données à afficher
+            options: {
+                responsive: true,  // Le graphique est réactif
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Prévisions des Revenus (sur 6 mois)'  // Titre du graphique
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw + ' GNF';  // Format des valeurs affichées (en euros)
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true  // L'axe Y commence à zéro
+                    }
+                }
+            }
+        };
+
+        // Créer le graphique dans le canvas
+        const ctx = document.getElementById('financialForecastChart').getContext('2d');
+        const financialForecastChart = new Chart(ctx, config);
+
+        // Tableau des achats en caisse
+        let purchases = [];
+
+        document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let itemName = document.getElementById('itemName').value;
+            let itemPrice = parseFloat(document.getElementById('itemPrice').value);
+            let itemQuantity = parseInt(document.getElementById('itemQuantity').value);
+            let totalPrice = itemPrice * itemQuantity;
+
+            // Ajouter l'achat à la liste des achats
+            purchases.push({ itemName, itemPrice, itemQuantity, totalPrice });
+
+            // Ajouter l'achat au tableau HTML
+            const tableBody = document.querySelector('#purchaseTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${itemName}</td>
+                <td>${itemPrice} GNF</td>
+                <td>${itemQuantity}</td>
+                <td>${totalPrice} GNF</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Simuler le paiement et mettre à jour la caisse
+            document.getElementById('paymentStatus').textContent = `Le paiement pour ${itemName} de ${totalPrice} € a été effectué avec succès.`;
+
+            // Mettre à jour la caisse et les prévisions avec l'IA
+            updateCashRegister();
+            updateForecastWithAI();
+        });
+
+        // Fonction pour mettre à jour la caisse avec IA (calcul total et prévisions)
+        function updateCashRegister() {
+            let totalAmount = 0;
+            purchases.forEach(purchase => {
+                totalAmount += purchase.totalPrice;
+            });
+
+            // Afficher le total de la caisse
+            console.log(`Total caisse : ${totalAmount} GNF`);
+        }
+
+        // Fonction de mise à jour des prévisions avec IA
+        function updateForecastWithAI() {
+            let totalPurchaseAmount = 0;
+
+            // Calculer le total des achats
+            purchases.forEach(purchase => {
+                totalPurchaseAmount += purchase.totalPrice;
+            });
+
+            // IA simple pour la prévision : Croissance future basée sur les achats
+            const averagePurchase = totalPurchaseAmount / purchases.length;
+            const forecastRevenue = averagePurchase * 1.15;  // Croissance de 15% pour les prévisions
+
+            // Mettre à jour les données du graphique avec la nouvelle prévision
+            forecastData.datasets[0].data = [forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue];
+            financialForecastChart.update();
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'inscription</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">FAMAA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="#">S'inscrire</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Formulaire d'inscription -->
+    <section class="container my-5">
+        <h2 class="text-center">S'inscrire sur la plateforme</h2>
+        
+        <!-- Formulaire d'inscription -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="registrationForm">
+                    <!-- Choisir le type d'utilisateur -->
+                    <div class="mb-4">
+                        <label for="userType" class="form-label">Choisissez votre type</label>
+                        <select class="form-select" id="userType" name="userType" onchange="showFieldsBasedOnUserType()" required>
+                            <option value="">Sélectionnez un type</option>
+                            <option value="user">Utilisateur</option>
+                            <option value="business">Entreprise</option>
+                            <option value="startup">Start-up</option>
+                            <option value="ngo">ONG</option>
+                            <option value="mentor">Accompagnateur</option>
+                        </select>
+                    </div>
+
+                    <!-- Informations Utilisateur -->
+                    <div id="userFields" class="user-type-fields" style="display: none;">
+                        <h4>Informations Utilisateur</h4>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+
+                    <!-- Informations Entreprise -->
+                    <div id="businessFields" class="user-type-fields" style="display: none;">
+                        <h4>Informations Entreprise</h4>
+                        <div class="mb-3">
+                            <label for="companyName" class="form-label">Nom de l'entreprise</label>
+                            <input type="text" class="form-control" id="companyName" name="companyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="companyEmail" class="form-label">Email de l'entreprise</label>
+                            <input type="email" class="form-control" id="companyEmail" name="companyEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="companyPhone" class="form-label">Numéro de téléphone de l'entreprise</label>
+                            <input type="text" class="form-control" id="companyPhone" name="companyPhone" required>
+                        </div>
+                    </div>
+
+                    <!-- Informations Start-up -->
+                    <div id="startupFields" class="user-type-fields" style="display: none;">
+                        <h4>Informations Start-up</h4>
+                        <div class="mb-3">
+                            <label for="startupName" class="form-label">Nom de la Start-up</label>
+                            <input type="text" class="form-control" id="startupName" name="startupName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="startupEmail" class="form-label">Email de la Start-up</label>
+                            <input type="email" class="form-control" id="startupEmail" name="startupEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="startupPhone" class="form-label">Numéro de téléphone de la Start-up</label>
+                            <input type="text" class="form-control" id="startupPhone" name="startupPhone" required>
+                        </div>
+                    </div>
+
+                    <!-- Informations ONG -->
+                    <div id="ngoFields" class="user-type-fields" style="display: none;">
+                        <h4>Informations ONG</h4>
+                        <div class="mb-3">
+                            <label for="ngoName" class="form-label">Nom de l'ONG</label>
+                            <input type="text" class="form-control" id="ngoName" name="ngoName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ngoEmail" class="form-label">Email de l'ONG</label>
+                            <input type="email" class="form-control" id="ngoEmail" name="ngoEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="ngoPhone" class="form-label">Numéro de téléphone de l'ONG</label>
+                            <input type="text" class="form-control" id="ngoPhone" name="ngoPhone" required>
+                        </div>
+                    </div>
+
+                    <!-- Informations Accompagnateur -->
+                    <div id="mentorFields" class="user-type-fields" style="display: none;">
+                        <h4>Informations Accompagnateur</h4>
+                        <div class="mb-3">
+                            <label for="mentorName" class="form-label">Nom de l'accompagnateur</label>
+                            <input type="text" class="form-control" id="mentorName" name="mentorName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mentorEmail" class="form-label">Email de l'accompagnateur</label>
+                            <input type="email" class="form-control" id="mentorEmail" name="mentorEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mentorPhone" class="form-label">Numéro de téléphone de l'accompagnateur</label>
+                            <input type="text" class="form-control" id="mentorPhone" name="mentorPhone" required>
+                        </div>
+                    </div>
+
+                    <!-- Bouton d'inscription -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4">
+        <p>&copy; 2025 FAMAA - Tous droits réservés.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script pour afficher les champs en fonction du type d'utilisateur choisi -->
+    <script>
+        function showFieldsBasedOnUserType() {
+            const userType = document.getElementById('userType').value;
+            
+            // Réinitialiser tous les champs
+            const userFields = document.getElementById('userFields');
+            const businessFields = document.getElementById('businessFields');
+            const startupFields = document.getElementById('startupFields');
+            const ngoFields = document.getElementById('ngoFields');
+            const mentorFields = document.getElementById('mentorFields');
+
+            userFields.style.display = 'none';
+            businessFields.style.display = 'none';
+            startupFields.style.display = 'none';
+            ngoFields.style.display = 'none';
+            mentorFields.style.display = 'none';
+
+            // Afficher les champs en fonction du type d'utilisateur choisi
+            if (userType === 'user') {
+                userFields.style.display = 'block';
+            } else if (userType === 'business') {
+                businessFields.style.display = 'block';
+            } else if (userType === 'startup') {
+                startupFields.style.display = 'block';
+            } else if (userType === 'ngo') {
+                ngoFields.style.display = 'block';
+            } else if (userType === 'mentor') {
+                mentorFields.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

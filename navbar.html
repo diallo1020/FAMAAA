@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Navbar fixe */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        body {
+            padding-top: 56px; /* Ajuste selon la hauteur de la navbar */
+        }
+
+        /* Carrousel agrandi */
+        .carousel-inner img {
+            width: 100%;
+            height: 500px; /* Augmenté pour plus d'impact visuel */
+            object-fit: cover;
+        }
+
+        /* Section des produits alignée avec la navbar */
+        .container-fluid {
+            max-width: 100%;
+        }
+
+        /* Redimensionner les images dans les cartes */
+        .card-img-top {
+            width: 100%;
+            height: 250px; /* Hauteur augmentée */
+            object-fit: cover;
+        }
+
+        /* Cartes uniformes */
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-body {
+            flex-grow: 1;
+        }
+
+        /* Titres en arrière-plan bleu */
+        .section-title {
+            background-color: blue;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">
+                <img src="images/logo.JPG" alt="Logo" style="height: 40px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active text-white" href="#">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link active text-white" href="Inscription.html">Inscription</a></li>
+                    <li class="nav-item"><a class="nav-link active text-white" href="Connexion.html">Connexion</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">Catégories</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Gamme pour le corps</a></li>
+                            <li><a class="dropdown-item" href="#">Gamme pour les cheveux</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="chercher" placeholder="Search">
+                    <button class="btn btn-outline-light" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Carrousel -->
+    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <img src="images/t1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="images/T6.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="images/T7.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Section des produits -->
+    <div class="container-fluid mt-5">
+        <h2 class="section-title">Nos Produits pour le corps</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/c4.jpg" class="card-img-top" alt="Shampoing">
+                    <div class="card-body">
+                        <h5 class="card-title">Shampoing Hydratant</h5>
+                        <p class="card-text">Idéal pour nourrir et hydrater vos cheveux.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/c1.jpg" class="card-img-top" alt="Crème hydratante">
+                    <div class="card-body">
+                        <h5 class="card-title">Crème Hydratante</h5>
+                        <p class="card-text">Parfait pour nourrir votre peau en profondeur.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/C2.jpg" class="card-img-top" alt="Huile capillaire">
+                    <div class="card-body">
+                        <h5 class="card-title">Huile Capillaire</h5>
+                        <p class="card-text">Favorise la croissance des cheveux et les protège.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section des produits pour cheveux -->
+    <div class="container-fluid mt-5">
+        <h2 class="section-title">Nos Produits pour les cheveux</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/télécharger.jpg" class="card-img-top" alt="Shampoing">
+                    <div class="card-body">
+                        <h5 class="card-title">Shampoing Hydratant</h5>
+                        <p class="card-text">Idéal pour nourrir et hydrater vos cheveux.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/CC2.jpg" class="card-img-top" alt="Crème hydratante">
+                    <div class="card-body">
+                        <h5 class="card-title">Crème Hydratante</h5>
+                        <p class="card-text">Parfait pour nourrir votre peau en profondeur.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="images/CC1.jpg" class="card-img-top" alt="Huile capillaire">
+                    <div class="card-body">
+                        <h5 class="card-title">Huile Capillaire</h5>
+                        <p class="card-text">Favorise la croissance des cheveux et les protège.</p>
+                        <a href="#" class="btn btn-primary">Voir le produit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Boutons "Précédent" et "Suivant" (Centrés) -->
+<div class="navigation-buttons d-flex justify-content-center my-4">
+    <button class="btn btn-outline-secondary mx-2" onclick="window.history.back()">← Précédent</button>
+    <button class="btn btn-outline-primary mx-2" onclick="window.location.href='#'">Suivant →</button>
+</div>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

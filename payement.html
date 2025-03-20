@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement - Mon E-commerce</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">FAMAA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-white" href="#">Panier</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page de Paiement -->
+    <section class="container my-5">
+        <h2 class="text-center">Choisir votre méthode de paiement</h2>
+        
+        <!-- Sélectionner le Mode de Paiement -->
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="paymentForm" action="traitement-paiement.php" method="POST">
+                    <div class="mb-4">
+                        <label for="paymentMethod" class="form-label">Choisir une méthode de paiement</label>
+                        <select class="form-select" id="paymentMethod" name="paymentMethod" onchange="showPaymentFields()" required>
+                            <option value="">Sélectionnez un mode de paiement</option>
+                            <option value="payCard">PayCard</option>
+                            <option value="orangeMoney">Orange Money</option>
+                            <option value="cashOnDelivery">Payer à la livraison</option>
+                        </select>
+                    </div>
+
+                    <!-- Section PayCard (masquée initialement) -->
+                    <div id="payCardFields" class="payment-method-fields" style="display: none;">
+                        <h4>PayCard</h4>
+                        <p>Saisissez les informations de votre carte bancaire pour finaliser votre paiement.</p>
+                        <div class="mb-3">
+                            <label for="cardNumber" class="form-label">Numéro de carte</label>
+                            <input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="1234 5678 9876 5432" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expiryDate" class="form-label">Date d'expiration</label>
+                            <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/AA" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" name="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <!-- Section Orange Money (masquée initialement) -->
+                    <div id="orangeMoneyFields" class="payment-method-fields" style="display: none;">
+                        <h4>Orange Money</h4>
+                        <p>Entrez votre numéro de téléphone associé à votre compte Orange Money pour effectuer le paiement.</p>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Numéro de téléphone</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Ex: 1234567890" required>
+                        </div>
+                    </div>
+
+                    <!-- Section Payer à la Livraison (masquée initialement) -->
+                    <div id="cashOnDeliveryFields" class="payment-method-fields" style="display: none;">
+                        <h4>Payer à la livraison</h4>
+                        <p>Saisissez les informations de livraison pour recevoir votre commande.</p>
+                        <div class="mb-3">
+                            <label for="deliveryAddress" class="form-label">Adresse de livraison</label>
+                            <input type="text" class="form-control" id="deliveryAddress" name="deliveryAddress" placeholder="Entrez votre adresse" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumberDelivery" class="form-label">Numéro de téléphone</label>
+                            <input type="text" class="form-control" id="phoneNumberDelivery" name="phoneNumberDelivery" placeholder="Ex: 1234567890" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="orderQuantity" class="form-label">Nombre de commandes</label>
+                            <input type="number" class="form-control" id="orderQuantity" name="orderQuantity" placeholder="1" required>
+                        </div>
+                    </div>
+
+                    <!-- Bouton de Soumission -->
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary" id="submitButton" disabled>Payer maintenant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-light text-center py-4">
+        <p>&copy; 2025 FAMAA - Tous droits réservés.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script pour afficher les champs en fonction du mode de paiement sélectionné -->
+    <script>
+        function showPaymentFields() {
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const payCardFields = document.getElementById('payCardFields');
+            const orangeMoneyFields = document.getElementById('orangeMoneyFields');
+            const cashOnDeliveryFields = document.getElementById('cashOnDeliveryFields');
+            const submitButton = document.getElementById('submitButton');
+
+            // Réinitialiser les champs
+            payCardFields.style.display = 'none';
+            orangeMoneyFields.style.display = 'none';
+            cashOnDeliveryFields.style.display = 'none';
+            submitButton.disabled = true;
+
+            // Afficher les champs en fonction de la méthode choisie
+            if (paymentMethod === 'payCard') {
+                payCardFields.style.display = 'block';
+                submitButton.disabled = false;
+            } else if (paymentMethod === 'orangeMoney') {
+                orangeMoneyFields.style.display = 'block';
+                submitButton.disabled = false;
+            } else if (paymentMethod === 'cashOnDelivery') {
+                cashOnDeliveryFields.style.display = 'block';
+                submitButton.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comptabilité et Prévisions Financières avec IA</title>
+    <!-- Ajouter le CDN de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Style global pour le site */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        canvas {
+            max-width: 100%;
+            margin-top: 30px;
+        }
+
+        .section {
+            padding: 20px;
+            margin-bottom: 50px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h3 {
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#">Dashboard IA</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Section Comptabilité -->
+        <div class="section">
+            <h2>Comptabilité</h2>
+            <p>Voici les outils de comptabilité pour vous aider à gérer les finances de votre entreprise ou de votre projet. Vous pouvez voir les prévisions des revenus pour les mois à venir.</p>
+        </div>
+
+        <!-- Formulaire de saisie des transactions -->
+        <form id="transactionForm">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="transactionDate" class="form-label">Date</label>
+                    <input type="date" class="form-control" id="transactionDate" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="transactionAmount" class="form-label">Montant</label>
+                    <input type="number" class="form-control" id="transactionAmount" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="transactionCategory" class="form-label">Catégorie</label>
+                    <select class="form-select" id="transactionCategory" required>
+                        <option value="">Sélectionnez une catégorie</option>
+                        <option value="revenu">Revenu</option>
+                        <option value="depense">Dépense</option>
+                        <option value="taxe">Taxe</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter Transaction</button>
+        </form>
+
+        <!-- Tableau des transactions -->
+        <div class="section">
+            <h3>Liste des Transactions</h3>
+            <table id="transactionsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Montant (GNF)</th>
+                        <th>Catégorie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les transactions seront ajoutées ici -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Graphique des prévisions financières -->
+        <div class="section">
+            <h2>Prévisions Financières</h2>
+            <canvas id="financialForecastChart" width="400" height="200"></canvas>
+        </div>
+
+    </div>
+
+    <script>
+        // Données fictives pour les prévisions financières
+        const forecastData = {
+            labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+            datasets: [{
+                label: 'Prévisions des Revenus (GNF)',
+                data: [15000, 18000, 22000, 25000, 27000, 30000, 32000], // Ces données peuvent être générées dynamiquement
+                borderColor: 'rgba(75, 192, 192, 1)',  // Couleur de la ligne
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',  // Couleur du fond
+                fill: true,  // Remplir la zone sous la ligne
+                tension: 0.4  // Courbure de la ligne
+            }]
+        };
+
+        // Configuration du graphique
+        const config = {
+            type: 'line',  // Type de graphique (ici, une ligne)
+            data: forecastData,  // Les données à afficher
+            options: {
+                responsive: true,  // Le graphique est réactif
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Prévisions des Revenus (sur 6 mois)'  // Titre du graphique
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw + ' GNF';  // Format des valeurs affichées (en euros)
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true  // L'axe Y commence à zéro
+                    }
+                }
+            }
+        };
+
+        // Créer le graphique dans le canvas
+        const ctx = document.getElementById('financialForecastChart').getContext('2d');
+        const financialForecastChart = new Chart(ctx, config);
+
+        // Tableau des transactions
+        let transactions = [];
+
+        document.getElementById('transactionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let date = document.getElementById('transactionDate').value;
+            let amount = parseFloat(document.getElementById('transactionAmount').value);
+            let category = document.getElementById('transactionCategory').value;
+
+            // Ajouter la transaction à la liste
+            transactions.push({ date, amount, category });
+
+            // Ajouter la transaction au tableau HTML
+            const tableBody = document.querySelector('#transactionsTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${date}</td>
+                <td>${amount} GNF</td>
+                <td>${category}</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Mettre à jour les prévisions financières avec l'IA
+            updateForecastWithAI();
+        });
+
+        // Fonction de mise à jour des prévisions avec IA
+        function updateForecastWithAI() {
+            let totalRevenue = 0;
+            let totalExpense = 0;
+
+            // Calculer le total des revenus et des dépenses
+            transactions.forEach(transaction => {
+                if (transaction.category === 'revenu') {
+                    totalRevenue += transaction.amount;
+                } else if (transaction.category === 'depense') {
+                    totalExpense += transaction.amount;
+                }
+            });
+
+            // IA simple pour la prévision : Croissance future basée sur la moyenne des revenus
+            const averageRevenue = totalRevenue / transactions.length;
+            const forecastRevenue = averageRevenue * 1.1;  // Croissance de 10% pour les prévisions
+
+            // Mettre à jour les données du graphique avec la nouvelle prévision
+            forecastData.datasets[0].data = [forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue, forecastRevenue];
+            financialForecastChart.update();
+        }
+    </script>
+
+</body>
+</html>
